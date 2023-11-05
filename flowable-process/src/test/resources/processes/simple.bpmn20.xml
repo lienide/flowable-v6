@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://flowable.org/processdef">
+  <process id="simple" name="simple" isExecutable="true">
+    <startEvent id="startnoneevent1" flowable:formFieldValidation="false"></startEvent>
+    <endEvent id="bpmnEndEvent_7"></endEvent>
+    <exclusiveGateway id="sid-AAC1C328-2D55-4847-AF24-243B82B9BACF" name="手机号匹配？" default="sid-803E29B1-2399-456F-9401-C43FA6F28841"></exclusiveGateway>
+    <parallelGateway id="sid-44C30BAC-C5AE-45CE-A6F0-27044CA0D2C3"></parallelGateway>
+    <serviceTask id="s1" name="s1" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[POST]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:string><![CDATA[http://localhost:9999/s1]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestHeaders">
+          <flowable:string><![CDATA[Content-Type:application/json]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestBody">
+          <flowable:expression><![CDATA[{"name":"${name}"}]]></flowable:expression>
+        </flowable:field>
+        <flowable:field name="responseVariableName">
+          <flowable:string><![CDATA[s1]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseParametersTransient">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+        <flowable:executionListener event="start" expression="#{execution.setVariable(&quot;ins1&quot;, &quot;s1&quot;)}"></flowable:executionListener>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="s2" name="s2" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[POST]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:string><![CDATA[http://localhost:9999/s2]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestHeaders">
+          <flowable:string><![CDATA[Content-Type:application/json]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestBody">
+          <flowable:expression><![CDATA[{"phone":${s1.phone}]]></flowable:expression>
+        </flowable:field>
+        <flowable:field name="responseVariableName">
+          <flowable:string><![CDATA[s2]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseParametersTransient">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+        <flowable:executionListener event="start" expression="#{execution.setVariable(&quot;ins2&quot;, &quot;s2&quot;)}"></flowable:executionListener>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="s3" name="s3" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[POST]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:string><![CDATA[http://localhost:9999/s3]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestHeaders">
+          <flowable:string><![CDATA[Content-Type:application/json]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestBody">
+          <flowable:expression><![CDATA[{"phone":"${s1.phone}"}]]></flowable:expression>
+        </flowable:field>
+        <flowable:field name="responseVariableName">
+          <flowable:string><![CDATA[s3]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseParametersTransient">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+        <flowable:executionListener event="start" expression="#{execution.setVariable(&quot;ins3&quot;, &quot;s3&quot;)}"></flowable:executionListener>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-8E33D61F-1FFC-4800-9D6E-19971B4A2C5F" sourceRef="startnoneevent1" targetRef="s1"></sequenceFlow>
+    <sequenceFlow id="sid-9226EA1F-5506-455F-8003-2D519D3F6C89" sourceRef="s1" targetRef="sid-AAC1C328-2D55-4847-AF24-243B82B9BACF"></sequenceFlow>
+    <sequenceFlow id="sid-56631D80-768F-48AB-A90A-8EA3031B6535" sourceRef="sid-44C30BAC-C5AE-45CE-A6F0-27044CA0D2C3" targetRef="s3"></sequenceFlow>
+    <parallelGateway id="sid-420B918B-1A68-42A4-A6BF-11C9A3E8D0EC"></parallelGateway>
+    <sequenceFlow id="sid-A91C59C1-C103-4A03-9F6C-3DDD0E9486DA" sourceRef="s3" targetRef="sid-420B918B-1A68-42A4-A6BF-11C9A3E8D0EC"></sequenceFlow>
+    <exclusiveGateway id="sid-48AC861C-4C41-42B5-9AAE-A36B28F61A89"></exclusiveGateway>
+    <serviceTask id="s4" name="s4" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[POST]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:string><![CDATA[http://localhost:9999/s4]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestHeaders">
+          <flowable:string><![CDATA[Content-Type:application/json]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestBody">
+          <flowable:expression><![CDATA[{"phone":"${s1.nv}"}]]></flowable:expression>
+        </flowable:field>
+        <flowable:field name="responseVariableName">
+          <flowable:string><![CDATA[s4]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseParametersTransient">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+        <flowable:executionListener event="start" expression="#{execution.setVariable(&quot;ins4&quot;, &quot;s4&quot;)}"></flowable:executionListener>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-C204493C-3BC2-4F7B-BF08-B32E1369D264" sourceRef="sid-48AC861C-4C41-42B5-9AAE-A36B28F61A89" targetRef="bpmnEndEvent_7"></sequenceFlow>
+    <sequenceFlow id="sid-1F5BCEBB-D174-416C-9E4D-3EB2356380EE" sourceRef="sid-420B918B-1A68-42A4-A6BF-11C9A3E8D0EC" targetRef="sid-48AC861C-4C41-42B5-9AAE-A36B28F61A89"></sequenceFlow>
+    <sequenceFlow id="sid-48AA2014-FFFD-4D9C-ABCE-D63CB653390B" sourceRef="s4" targetRef="sid-48AC861C-4C41-42B5-9AAE-A36B28F61A89"></sequenceFlow>
+    <sequenceFlow id="sid-5EA542D1-050E-4893-8BC9-370D8D67DD29" sourceRef="s2" targetRef="sid-420B918B-1A68-42A4-A6BF-11C9A3E8D0EC"></sequenceFlow>
+    <sequenceFlow id="sid-92BEE230-9265-4B61-988D-12EFD74B51F8" sourceRef="sid-44C30BAC-C5AE-45CE-A6F0-27044CA0D2C3" targetRef="s2"></sequenceFlow>
+    <sequenceFlow id="sid-803E29B1-2399-456F-9401-C43FA6F28841" name="未查得" sourceRef="sid-AAC1C328-2D55-4847-AF24-243B82B9BACF" targetRef="s4"></sequenceFlow>
+    <sequenceFlow id="sid-D5B4C2C2-D49B-470B-A520-45466F273EF2" name="查得" sourceRef="sid-AAC1C328-2D55-4847-AF24-243B82B9BACF" targetRef="sid-44C30BAC-C5AE-45CE-A6F0-27044CA0D2C3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[#{s1.a.b!=null}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_simple">
+    <bpmndi:BPMNPlane bpmnElement="simple" id="BPMNPlane_simple">
+      <bpmndi:BPMNShape bpmnElement="startnoneevent1" id="BPMNShape_startnoneevent1">
+        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="194.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="bpmnEndEvent_7" id="BPMNShape_bpmnEndEvent_7">
+        <omgdc:Bounds height="28.0" width="28.0" x="1020.0" y="195.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-AAC1C328-2D55-4847-AF24-243B82B9BACF" id="BPMNShape_sid-AAC1C328-2D55-4847-AF24-243B82B9BACF">
+        <omgdc:Bounds height="40.0" width="40.0" x="405.0" y="189.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-44C30BAC-C5AE-45CE-A6F0-27044CA0D2C3" id="BPMNShape_sid-44C30BAC-C5AE-45CE-A6F0-27044CA0D2C3">
+        <omgdc:Bounds height="40.0" width="40.0" x="525.0" y="105.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="s1" id="BPMNShape_s1">
+        <omgdc:Bounds height="80.0" width="100.0" x="270.0" y="169.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="s2" id="BPMNShape_s2">
+        <omgdc:Bounds height="80.0" width="100.0" x="600.0" y="15.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="s3" id="BPMNShape_s3">
+        <omgdc:Bounds height="80.0" width="100.0" x="600.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-420B918B-1A68-42A4-A6BF-11C9A3E8D0EC" id="BPMNShape_sid-420B918B-1A68-42A4-A6BF-11C9A3E8D0EC">
+        <omgdc:Bounds height="40.0" width="40.0" x="735.0" y="105.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-48AC861C-4C41-42B5-9AAE-A36B28F61A89" id="BPMNShape_sid-48AC861C-4C41-42B5-9AAE-A36B28F61A89">
+        <omgdc:Bounds height="40.0" width="40.0" x="846.0" y="189.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="s4" id="BPMNShape_s4">
+        <omgdc:Bounds height="80.0" width="100.0" x="600.0" y="285.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-56631D80-768F-48AB-A90A-8EA3031B6535" id="BPMNEdge_sid-56631D80-768F-48AB-A90A-8EA3031B6535" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="545.0" y="144.93467741935484"></omgdi:waypoint>
+        <omgdi:waypoint x="545.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="190.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-8E33D61F-1FFC-4800-9D6E-19971B4A2C5F" id="BPMNEdge_sid-8E33D61F-1FFC-4800-9D6E-19971B4A2C5F" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="179.94999923927443" y="209.0"></omgdi:waypoint>
+        <omgdi:waypoint x="269.9999999999684" y="209.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-A91C59C1-C103-4A03-9F6C-3DDD0E9486DA" id="BPMNEdge_sid-A91C59C1-C103-4A03-9F6C-3DDD0E9486DA" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="699.9499999999999" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="755.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="755.0" y="144.91529275808938"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-1F5BCEBB-D174-416C-9E4D-3EB2356380EE" id="BPMNEdge_sid-1F5BCEBB-D174-416C-9E4D-3EB2356380EE" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="774.9410216021282" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="866.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="866.0" y="189.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-D5B4C2C2-D49B-470B-A520-45466F273EF2" id="BPMNEdge_sid-D5B4C2C2-D49B-470B-A520-45466F273EF2" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="425.0" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="425.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="525.0" y="125.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-803E29B1-2399-456F-9401-C43FA6F28841" id="BPMNEdge_sid-803E29B1-2399-456F-9401-C43FA6F28841" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="425.0" y="228.94140826873382"></omgdi:waypoint>
+        <omgdi:waypoint x="425.0" y="325.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="325.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-9226EA1F-5506-455F-8003-2D519D3F6C89" id="BPMNEdge_sid-9226EA1F-5506-455F-8003-2D519D3F6C89" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="369.94999999997106" y="209.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="209.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-C204493C-3BC2-4F7B-BF08-B32E1369D264" id="BPMNEdge_sid-C204493C-3BC2-4F7B-BF08-B32E1369D264" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="885.9440660320568" y="209.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1020.0" y="209.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-48AA2014-FFFD-4D9C-ABCE-D63CB653390B" id="BPMNEdge_sid-48AA2014-FFFD-4D9C-ABCE-D63CB653390B" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="699.9499999999687" y="325.0"></omgdi:waypoint>
+        <omgdi:waypoint x="866.0" y="325.0"></omgdi:waypoint>
+        <omgdi:waypoint x="866.0" y="228.90856341673864"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-5EA542D1-050E-4893-8BC9-370D8D67DD29" id="BPMNEdge_sid-5EA542D1-050E-4893-8BC9-370D8D67DD29" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="699.9499999999853" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="755.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="755.0" y="105.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-92BEE230-9265-4B61-988D-12EFD74B51F8" id="BPMNEdge_sid-92BEE230-9265-4B61-988D-12EFD74B51F8" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="556.9699999999999" y="116.99999999999997"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="88.30000000000001"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

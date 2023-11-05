@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="testAsyncHttpTask" name="testAsyncHttpTask" isExecutable="true">
+    <startEvent id="startEvent"/>
+    <sequenceFlow id="startEvent-shttpbin-post1" sourceRef="startEvent" targetRef="sid-5e1131f4-9ee0-40a3-a39a-faf3bbfc27b8"/>
+    <parallelGateway id="sid-5e1131f4-9ee0-40a3-a39a-faf3bbfc27b8"/>
+    <sequenceFlow id="sid-1320b57f-eca0-4d65-a71e-43313301a0f8" sourceRef="sid-5e1131f4-9ee0-40a3-a39a-faf3bbfc27b8" targetRef="httpbin-post"/>
+    <serviceTask id="httpbin-post" name="httpbin post" flowable:type="http" flowable:exclusive="true" flowable:parallelInSameTransaction="true">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string>POST</flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:string>https://httpbin.org/post</flowable:string>
+        </flowable:field>
+        <flowable:field name="requestHeaders">
+          <flowable:string>Content-Type:application/json</flowable:string>
+        </flowable:field>
+        <flowable:field name="requestBody">
+          <flowable:string>""</flowable:string>
+        </flowable:field>
+        <flowable:field name="requestTimeout">
+          <flowable:string>5000</flowable:string>
+        </flowable:field>
+        <flowable:field name="disallowRedirects">
+          <flowable:string>false</flowable:string>
+        </flowable:field>
+        <flowable:field name="failStatusCodes">
+          <flowable:string/>
+        </flowable:field>
+        <flowable:field name="handleStatusCodes">
+          <flowable:string/>
+        </flowable:field>
+        <flowable:field name="ignoreException">
+          <flowable:string>true</flowable:string>
+        </flowable:field>
+        <flowable:field name="saveRequestVariables">
+          <flowable:string>false</flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseParameters">
+          <flowable:string>false</flowable:string>
+        </flowable:field>
+        <flowable:field name="resultVariablePrefix">
+          <flowable:string/>
+        </flowable:field>
+        <flowable:field name="saveResponseParametersTransient">
+          <flowable:string>false</flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string>true</flowable:string>
+        </flowable:field>
+        <flowable:field name="requestBodyEncoding">
+          <flowable:string>UTF-8</flowable:string>
+        </flowable:field>
+        <flowable:field name="responseVariableName">
+          <flowable:string>httpbinpost</flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-fcd603d5-0697-463b-82e1-77fabe76d335" sourceRef="httpbin-post" targetRef="sid-1e6d1dda-6ac8-44ff-8b4d-8506dccce92f"/>
+    <sequenceFlow id="sid-1292ac0d-4e82-4d5b-869b-7a01e2168839" sourceRef="sid-5e1131f4-9ee0-40a3-a39a-faf3bbfc27b8" targetRef="httpbin-get"/>
+    <serviceTask flowable:type="http" id="httpbin-get" flowable:exclusive="true" name="httpbin get" flowable:parallelInSameTransaction="true">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string>GET</flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:string>https://httpbin.org/get</flowable:string>
+        </flowable:field>
+        <flowable:field name="requestHeaders">
+          <flowable:string>accept:application/json</flowable:string>
+        </flowable:field>
+        <flowable:field name="responseVariableName">
+          <flowable:string>httpbinget</flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string>true</flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseParametersTransient">
+          <flowable:string>false</flowable:string>
+        </flowable:field>
+        <flowable:field name="saveRequestVariables">
+          <flowable:string>false</flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseParameters">
+          <flowable:string>false</flowable:string>
+        </flowable:field>
+        <flowable:field name="ignoreException">
+          <flowable:string>true</flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-2d9fb06b-0081-491c-9afd-507ffdd3c07f" sourceRef="httpbin-get" targetRef="sid-1e6d1dda-6ac8-44ff-8b4d-8506dccce92f"/>
+    <parallelGateway id="sid-1e6d1dda-6ac8-44ff-8b4d-8506dccce92f"/>
+    <sequenceFlow id="sid-5edb3555-a58d-4dcb-b7e9-8873a3bb28f9" sourceRef="sid-1e6d1dda-6ac8-44ff-8b4d-8506dccce92f" targetRef="endEvent"/>
+    <endEvent id="endEvent"/>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_testAsyncHttpTask">
+    <bpmndi:BPMNPlane bpmnElement="testAsyncHttpTask" id="BPMNPlane_testAsyncHttpTask">
+      <bpmndi:BPMNShape id="shape-6c0fd802-016b-4097-b4fd-fe9d9ca6b9a3" bpmnElement="startEvent">
+        <omgdc:Bounds x="-405.0" y="-75.0" width="30.0" height="30.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape-8a1130f2-5877-47c6-a9fe-f87f3fe46bfa" bpmnElement="httpbin-post">
+        <omgdc:Bounds x="-165.0" y="-185.0" width="100.0" height="80.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge-be8800a7-fc47-4c04-b6ba-68f69e259e34" bpmnElement="startEvent-shttpbin-post1">
+        <omgdi:waypoint x="-375.0" y="-60.0"/>
+        <omgdi:waypoint x="-279.99997" y="-60.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="shape-d18f48ba-9d5e-4bb4-a707-a2bafbc69eb4" bpmnElement="endEvent">
+        <omgdc:Bounds x="160.0" y="-75.0" width="30.0" height="30.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape-4fb03029-2ed8-43de-aa01-8585b8a7cd96" bpmnElement="httpbin-get">
+        <omgdc:Bounds x="-165.0" y="-10.0" width="100.0" height="80.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape-12c6f460-73a1-45a6-b052-56c24b439ce4" bpmnElement="sid-5e1131f4-9ee0-40a3-a39a-faf3bbfc27b8">
+        <omgdc:Bounds x="-280.0" y="-80.0" width="40.0" height="40.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge-dc6c833c-6ff8-4891-aa9c-587d4f450f82" bpmnElement="sid-1292ac0d-4e82-4d5b-869b-7a01e2168839">
+        <omgdi:waypoint x="-260.0" y="-40.0"/>
+        <omgdi:waypoint x="-165.0" y="10.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="shape-8901c0ca-638a-470d-aef0-f1691234de0f" bpmnElement="sid-1e6d1dda-6ac8-44ff-8b4d-8506dccce92f">
+        <omgdc:Bounds x="5.0" y="-80.0" width="40.0" height="40.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge-076f7215-307e-4488-9fda-ff6d860a4d38" bpmnElement="sid-2d9fb06b-0081-491c-9afd-507ffdd3c07f">
+        <omgdi:waypoint x="-65.0" y="10.0"/>
+        <omgdi:waypoint x="25.0" y="-40.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge-404fd12f-50e8-4326-a0ad-27d159828967" bpmnElement="sid-fcd603d5-0697-463b-82e1-77fabe76d335">
+        <omgdi:waypoint x="-65.0" y="-125.0"/>
+        <omgdi:waypoint x="25.0" y="-80.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge-a555e3f8-648f-424d-987c-9bc14f744dc3" bpmnElement="sid-5edb3555-a58d-4dcb-b7e9-8873a3bb28f9">
+        <omgdi:waypoint x="45.0" y="-60.0"/>
+        <omgdi:waypoint x="160.0" y="-60.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="edge-6d11fefc-565e-4f5e-88a0-a19154e59a95" bpmnElement="sid-1320b57f-eca0-4d65-a71e-43313301a0f8">
+        <omgdi:waypoint x="-260.0" y="-80.0"/>
+        <omgdi:waypoint x="-165.0" y="-125.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

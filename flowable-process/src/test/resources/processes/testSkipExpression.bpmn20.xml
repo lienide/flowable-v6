@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="testSkipExpression" name="testSkipExpression" isExecutable="true">
+    <startEvent id="sid-f8d91ea8-2093-41b8-a36b-663760b29e0b"/>
+    <serviceTask flowable:type="http" id="sid-5ae49b28-5a9c-41b6-a9be-008f62259fb6" flowable:exclusive="true" name="Task1" flowable:skipExpression="#{skipTask1}">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string>GET</flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:string>https://httpbin.org/get</flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string>true</flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-f0c3d779-d456-4ec3-ade4-4eca2ffc794c" sourceRef="sid-f8d91ea8-2093-41b8-a36b-663760b29e0b" targetRef="sid-5ae49b28-5a9c-41b6-a9be-008f62259fb6"/>
+    <serviceTask flowable:type="http" id="sid-9c2356f2-a443-4b0e-a982-80dd427d2112" flowable:exclusive="true" name="Task2">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string>POST</flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:string>https://httpbin.org/post</flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string>true</flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-e40bd9a8-8e07-4aec-9b84-4e7c9c091ea1" sourceRef="sid-5ae49b28-5a9c-41b6-a9be-008f62259fb6" targetRef="sid-9c2356f2-a443-4b0e-a982-80dd427d2112"/>
+    <endEvent id="sid-60987ae9-f786-41c7-a865-684026e9265d"/>
+    <sequenceFlow id="sid-921bb532-91e2-4518-9605-44434e729e66" sourceRef="sid-9c2356f2-a443-4b0e-a982-80dd427d2112" targetRef="sid-60987ae9-f786-41c7-a865-684026e9265d"/>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_testSkipExpression">
+    <bpmndi:BPMNPlane bpmnElement="testSkipExpression" id="BPMNPlane_testSkipExpression">
+      <bpmndi:BPMNShape id="shape-f76e284f-2a2a-45b0-9bff-8c9a19305918" bpmnElement="sid-f8d91ea8-2093-41b8-a36b-663760b29e0b">
+        <omgdc:Bounds x="-10.0" y="-35.0" width="30.0" height="30.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="shape-0b412bcf-70a8-45e4-adf3-fc9f5ad0e347" bpmnElement="sid-5ae49b28-5a9c-41b6-a9be-008f62259fb6">
+        <omgdc:Bounds x="90.0" y="-55.0" width="100.0" height="80.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge-b9262ca8-bfd9-4413-82ba-4e495403ecda" bpmnElement="sid-f0c3d779-d456-4ec3-ade4-4eca2ffc794c">
+        <omgdi:waypoint x="20.0" y="-12.5"/>
+        <omgdi:waypoint x="90.0" y="-15.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="shape-f5bca908-84d9-46bd-946f-59e282e6f6f9" bpmnElement="sid-9c2356f2-a443-4b0e-a982-80dd427d2112">
+        <omgdc:Bounds x="260.0" y="-55.0" width="100.0" height="80.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge-3030a4d3-3acc-44a2-ae7e-7a90a171b913" bpmnElement="sid-e40bd9a8-8e07-4aec-9b84-4e7c9c091ea1">
+        <omgdi:waypoint x="190.0" y="-15.0"/>
+        <omgdi:waypoint x="260.0" y="-15.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="shape-c30c335f-1038-4497-b587-0aa59ec57471" bpmnElement="sid-60987ae9-f786-41c7-a865-684026e9265d">
+        <omgdc:Bounds x="420.0" y="-25.0" width="30.0" height="30.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="edge-8a840106-4e9f-415f-8710-6c0db6822386" bpmnElement="sid-921bb532-91e2-4518-9605-44434e729e66">
+        <omgdi:waypoint x="360.0" y="-15.0"/>
+        <omgdi:waypoint x="420.0" y="-17.5"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,0 +1,57 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="processEngineConfiguration" class="org.flowable.engine.impl.cfg.StandaloneProcessEngineConfiguration">
+
+        <property name="jdbcUrl" value="jdbc:h2:mem:flowable;DB_CLOSE_DELAY=1000"/>
+        <property name="jdbcDriver" value="org.h2.Driver"/>
+        <property name="jdbcUsername" value="sa"/>
+        <property name="jdbcPassword" value=""/>
+
+        <property name="databaseSchemaUpdate" value="true"/>
+
+        <property name="asyncExecutorActivate" value="false"/>
+
+        <property name="history" value="audit"/>
+
+        <property name="disableIdmEngine" value="true"/>
+
+        <property name="disableEventRegistry" value="true"/>
+
+        <property name="eventListeners">
+            <list>
+                <bean class="org.example.flowable.event.LoggingEventListener"/>
+            </list>
+        </property>
+
+        <property name="typedEventListeners">
+            <map>
+                <entry key="JOB_EXECUTION_SUCCESS,JOB_EXECUTION_FAILURE">
+                    <list>
+                        <bean class="org.example.flowable.event.JobEventListener"/>
+                    </list>
+                </entry>
+            </map>
+        </property>
+
+        <property name="httpClientConfig" ref="httpClientConfig"/>
+    </bean>
+
+    <bean id="httpClientConfig" class="org.flowable.engine.cfg.HttpClientConfig">
+        <property name="connectTimeout" value="5000"/>
+        <property name="socketTimeout" value="5000"/>
+        <property name="connectionRequestTimeout" value="5000"/>
+        <property name="requestRetryLimit" value="3"/>
+    </bean>
+
+    <bean id="processEngine" class="org.flowable.spring.ProcessEngineFactoryBean">
+        <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+    </bean>
+
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"/>
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"/>
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/>
+</beans>

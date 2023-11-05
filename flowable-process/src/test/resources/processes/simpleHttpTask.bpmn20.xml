@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef" exporter="Flowable Open Source Modeler" exporterVersion="6.8.0">
+  <process id="simpleHttpTask" name="simpleHttpTask" isExecutable="true">
+    <startEvent id="startEvent1" flowable:formFieldValidation="true"></startEvent>
+    <serviceTask id="httpbin" name="httpbin get" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[GET]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:string><![CDATA[https://httpbin.org/get]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="responseVariableName">
+          <flowable:string><![CDATA[httpbin]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseParametersTransient">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-6CA1D1B8-E4E2-4BA5-98F9-F5946484B1AC" sourceRef="startEvent1" targetRef="httpbin"></sequenceFlow>
+    <endEvent id="sid-A7C20E65-5422-4FB9-889C-CD17D8285619"></endEvent>
+    <scriptTask id="sid-AC30348E-028A-4D82-8498-BD24C16992D1" scriptFormat="javascript">
+      <script>
+        <![CDATA[
+          var httpbin = JSON.parse(execution.getVariable('httpbin'));
+          execution.setVariable('origin', httpbin.origin)
+        ]]>
+      </script>
+    </scriptTask>
+    <sequenceFlow id="sid-A7769273-C88F-42E8-B59F-8E36F0D9CD69" sourceRef="httpbin" targetRef="sid-AC30348E-028A-4D82-8498-BD24C16992D1"></sequenceFlow>
+    <sequenceFlow id="sid-143159FD-86FE-458B-9E89-6016AFA08F69" sourceRef="sid-AC30348E-028A-4D82-8498-BD24C16992D1" targetRef="sid-A7C20E65-5422-4FB9-889C-CD17D8285619"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_simpleHttpTask">
+    <bpmndi:BPMNPlane bpmnElement="simpleHttpTask" id="BPMNPlane_simpleHttpTask">
+      <bpmndi:BPMNShape bpmnElement="startEvent1" id="BPMNShape_startEvent1">
+        <omgdc:Bounds height="30.0" width="30.0" x="100.0" y="163.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="httpbin" id="BPMNShape_httpbin">
+        <omgdc:Bounds height="80.0" width="100.0" x="255.0" y="141.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-A7C20E65-5422-4FB9-889C-CD17D8285619" id="BPMNShape_sid-A7C20E65-5422-4FB9-889C-CD17D8285619">
+        <omgdc:Bounds height="28.0" width="28.0" x="630.0" y="167.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-AC30348E-028A-4D82-8498-BD24C16992D1" id="BPMNShape_sid-AC30348E-028A-4D82-8498-BD24C16992D1">
+        <omgdc:Bounds height="80.0" width="100.0" x="435.0" y="141.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-6CA1D1B8-E4E2-4BA5-98F9-F5946484B1AC" id="BPMNEdge_sid-6CA1D1B8-E4E2-4BA5-98F9-F5946484B1AC" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="129.9481142365153" y="178.23602410459168"></omgdi:waypoint>
+        <omgdi:waypoint x="254.99999999999895" y="180.21052631578948"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-143159FD-86FE-458B-9E89-6016AFA08F69" id="BPMNEdge_sid-143159FD-86FE-458B-9E89-6016AFA08F69" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="534.9499999998701" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="630.0" y="181.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-A7769273-C88F-42E8-B59F-8E36F0D9CD69" id="BPMNEdge_sid-A7769273-C88F-42E8-B59F-8E36F0D9CD69" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="354.94999999984077" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="434.99999999997226" y="181.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

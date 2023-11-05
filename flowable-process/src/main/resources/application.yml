@@ -1,0 +1,18 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  datasource:
+    url: jdbc:mysql://root@localhost:3306/flowable
+
+flowable:
+  idm:
+    enabled: false
+  eventregistry:
+    enabled: false
