@@ -1,5 +1,9 @@
 package org.example.flowable;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.flowable.common.engine.api.delegate.Expression;
 import org.flowable.common.engine.api.delegate.FlowableFunctionDelegate;
 import org.flowable.common.engine.api.variable.VariableContainer;
@@ -66,10 +70,17 @@ public class ExpressionTest {
     }
 
     @Test
-    public void test() { // TODO: resolve miss val when vars:get(age) is null => {'name':}
+    public void test() throws Exception { // TODO: resolve miss val when vars:get(age) is null => {'name':}
         long l = System.currentTimeMillis();
-        Expression expression = expressionManager.createExpression("{'age':${vars:get(age)}}");
-        Object value = expression.getValue(variableContainer);
-        System.out.println("cost: " + (System.currentTimeMillis() - l) + " " + value);
+
+        variableContainer.setVariable("name", null);
+
+        Expression expression = expressionManager.createExpression("{'name': ${name}}");
+        String value = (String) expression.getValue(variableContainer);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(value);
+
+        System.out.println("cost: " + (System.currentTimeMillis() - l) + " " + jsonNode);
     }
 }

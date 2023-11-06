@@ -5,10 +5,13 @@
     <serviceTask id="httpbin" name="httpbin get" flowable:parallelInSameTransaction="true" flowable:type="http">
       <extensionElements>
         <flowable:field name="requestMethod">
-          <flowable:string><![CDATA[GET]]></flowable:string>
+          <flowable:string><![CDATA[POST]]></flowable:string>
         </flowable:field>
         <flowable:field name="requestUrl">
-          <flowable:string><![CDATA[https://httpbin.org/get]]></flowable:string>
+          <flowable:string><![CDATA[https://httpbin.org/post]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestBody">
+          <flowable:expression><![CDATA[{'name':${var:get(name)}}]]></flowable:expression>
         </flowable:field>
         <flowable:field name="responseVariableName">
           <flowable:string><![CDATA[httpbin]]></flowable:string>
