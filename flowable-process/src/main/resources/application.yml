@@ -1,37 +1,12 @@
-server:
-  port: 9898
-  servlet:
-    context-path: /process
-    encoding:
-      forceResponse: true
-  error:
-    include-message: always
-  shutdown: graceful
-
 management:
   endpoints:
     web:
       exposure:
         include: '*'
-  endpoint:
-    health:
-      probes:
-        enabled: true
 
 spring:
-  jpa:
-    open-in-view: false
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    properties:
-      hibernate.format_sql: true
   datasource:
     url: jdbc:mysql://root@localhost:3306/flowable?nullCatalogMeansCurrent=true
-#  jackson:
-#    time-zone: GMT+8
 
 flowable:
   idm:
@@ -44,3 +19,8 @@ flowable:
     disable-cert-verify: false
   eventregistry:
     enabled: false
+
+logging:
+  level:
+    org.flowable.engine.impl.persistence.entity.*: debug
+    org.flowable.task.service.impl.persistence.entity.*: debug
