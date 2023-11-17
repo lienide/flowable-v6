@@ -6,11 +6,16 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import liquibase.pro.packaged.B;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.flowable.engine.cfg.HttpClientConfig;
 import org.flowable.http.common.api.client.FlowableHttpClient;
 import org.flowable.http.common.impl.apache.client5.ApacheHttpComponents5FlowableHttpClient;
 import org.flowable.http.common.impl.spring.reactive.SpringWebClientFlowableHttpClient;
 import org.flowable.spring.boot.FlowableHttpProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.groovy.template.GroovyTemplateAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
 import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
 import org.springframework.cloud.client.loadbalancer.reactive.LoadBalancedExchangeFilterFunction;
@@ -20,7 +25,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.http.client.HttpClientSecurityUtils;
 import reactor.netty.resources.ConnectionProvider;
+import reactor.netty.tcp.SslProvider;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
@@ -33,23 +40,21 @@ import static java.lang.Math.toIntExact;
 @Configuration(proxyBeanMethods = false)
 public class FlowableSupports {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FlowableSupports.class);
+
     @Bean
     public WebClientCustomizer webClientCustomizer(FlowableHttpProperties httpProperties,
                                                    LoadBalancedExchangeFilterFunction lbFunction) {
         return webClientBuilder -> {
-            HttpClientConfig config = new HttpClientConfig();
-            config.setUseSystemProperties(httpProperties.isUseSystemProperties());
-            config.setConnectionRequestTimeout(httpProperties.getConnectionRequestTimeout());
-            config.setRequestRetryLimit(httpProperties.getRequestRetryLimit());
 
             HttpClient httpClient = HttpClient.create(ConnectionProvider
                             .builder("flowableHttpClient")
                             .maxConnections(500)
                             .build())
-                    .disableRetry(httpProperties.getRequestRetryLimit() == 0)
                     .responseTimeout(httpProperties.getSocketTimeout())
                     .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                             toIntExact(httpProperties.getConnectTimeout().toMillis()))
+                    .secure()
                     .compress(true);
 
             if (httpProperties.isDisableCertVerify()) {
@@ -61,7 +66,7 @@ public class FlowableSupports {
 
                     httpClient = httpClient.secure(spec -> spec.sslContext(sslContext));
                 } catch (Exception e) {
-                    // logger.error("Could not configure HTTP Client SSL self signed strategy", e);
+                    LOGGER.error("Could not configure HTTP Client SSL self signed strategy", e);
                 }
             }
 
