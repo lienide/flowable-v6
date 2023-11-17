@@ -14,13 +14,18 @@ flowable:
   http:
     connect-timeout: 5s
     socket-timeout: 5s
-    connection-request-timeout: 5s
-    request-retry-limit: 3
+    request-retry-limit: 0
     disable-cert-verify: false
   eventregistry:
+    enabled: false
+
+eureka:
+  client:
     enabled: false
 
 logging:
   level:
     org.flowable.engine.impl.persistence.entity.*: debug
     org.flowable.task.service.impl.persistence.entity.*: debug
+
+debug: true
