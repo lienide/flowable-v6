@@ -53,7 +53,7 @@ public class FlowableSupports {
     @Bean
     @ConditionalOnProperty(value = "spring.cloud.loadbalancer.retry.enabled", havingValue = "false",
             matchIfMissing = true)
-    public ReactorLoadBalancerExchangeFilterFunction loadBalancerExchangeFilterFunction(
+    public ReactorLoadBalancerExchangeFilterFunction lbFunction(
             ReactiveLoadBalancer.Factory<ServiceInstance> loadBalancerFactory,
             ObjectProvider<List<LoadBalancerClientRequestTransformer>> transformers) {
         return new ReactorLoadBalancerExchangeFilterFunction(loadBalancerFactory,
