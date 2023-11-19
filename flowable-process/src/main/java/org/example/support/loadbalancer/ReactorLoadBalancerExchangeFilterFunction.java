@@ -15,9 +15,8 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-
-import static org.example.support.loadbalancer.ExchangeFilterFunctionUtils.*;
 
 /**
  * @author renc
@@ -111,5 +110,36 @@ public class ReactorLoadBalancerExchangeFilterFunction implements LoadBalancedEx
             return Mono.just(new EmptyResponse());
         }
         return Mono.from(loadBalancer.choose(request));
+    }
+
+    static String getHint(String serviceId, Map<String, String> hints) {
+        String defaultHint = hints.getOrDefault("default", "default");
+        String hintPropertyValue = hints.get(serviceId);
+        return hintPropertyValue != null ? hintPropertyValue : defaultHint;
+    }
+
+    static ClientRequest buildClientRequest(ClientRequest request, ServiceInstance serviceInstance,
+                                            String instanceIdCookieName, boolean addServiceInstanceCookie,
+                                            List<LoadBalancerClientRequestTransformer> transformers) {
+        URI originalUrl = request.url();
+        ClientRequest clientRequest = ClientRequest
+                .create(request.method(), LoadBalancerUriTools.reconstructURI(serviceInstance, originalUrl))
+                .headers(headers -> headers.addAll(request.headers())).cookies(cookies -> {
+                    cookies.addAll(request.cookies());
+                    if (!(instanceIdCookieName == null || instanceIdCookieName.length() == 0)
+                            && addServiceInstanceCookie) {
+                        cookies.add(instanceIdCookieName, serviceInstance.getInstanceId());
+                    }
+                }).attributes(attributes -> attributes.putAll(request.attributes())).body(request.body()).build();
+        if (transformers != null) {
+            for (LoadBalancerClientRequestTransformer transformer : transformers) {
+                clientRequest = transformer.transformRequest(clientRequest, serviceInstance);
+            }
+        }
+        return clientRequest;
+    }
+
+    static String serviceInstanceUnavailableMessage(String serviceId) {
+        return "LoadBalancer does not contain an instance for the service " + serviceId;
     }
 }
