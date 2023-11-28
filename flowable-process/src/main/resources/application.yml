@@ -1,3 +1,8 @@
+server:
+  port: 9898
+  servlet:
+    context-path: /process
+
 management:
   endpoints:
     web:
@@ -14,7 +19,6 @@ flowable:
   http:
     connect-timeout: 5s
     socket-timeout: 5s
-    request-retry-limit: 0
     disable-cert-verify: false
   eventregistry:
     enabled: false
@@ -28,4 +32,4 @@ logging:
     org.flowable.engine.impl.persistence.entity.*: debug
     org.flowable.task.service.impl.persistence.entity.*: debug
 
-debug: true
+#debug: true

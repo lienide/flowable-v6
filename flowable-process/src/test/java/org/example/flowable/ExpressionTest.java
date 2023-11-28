@@ -1,5 +1,6 @@
 package org.example.flowable;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExpressionTest {
 
@@ -73,12 +75,17 @@ public class ExpressionTest {
     public void test() throws Exception { // TODO: resolve miss val when vars:get(age) is null => {'name':}
         long l = System.currentTimeMillis();
 
-        variableContainer.setVariable("name", null);
+        Map<String, Object> params = new HashMap<>();
+        params.put("p1", "v1");
 
-        Expression expression = expressionManager.createExpression("{'name': ${name}}");
+        variableContainer.setVariable("name", "abc");
+        variableContainer.setVariable("params", params);
+
+        Expression expression = expressionManager.createExpression("{'name': '${name}', 'params': '${params}'}");
         String value = (String) expression.getValue(variableContainer);
 
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper()
+                .enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
         JsonNode jsonNode = objectMapper.readTree(value);
 
         System.out.println("cost: " + (System.currentTimeMillis() - l) + " " + jsonNode);

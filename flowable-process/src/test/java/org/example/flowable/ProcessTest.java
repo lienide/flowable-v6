@@ -69,8 +69,8 @@ public class ProcessTest {
     public void testSkipExpression() {
         HashMap<String, Object> variables = new HashMap<>();
         variables.put("skipTask1", true);
-//        variables.put("_ACTIVITI_SKIP_EXPRESSION_ENABLED", true);
-        variables.put("_FLOWABLE_SKIP_EXPRESSION_ENABLED", true);
+        variables.put("_ACTIVITI_SKIP_EXPRESSION_ENABLED", true);
+        // variables.put("_FLOWABLE_SKIP_EXPRESSION_ENABLED", true);
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("testSkipExpression", variables);
         System.out.println(processInstance.getProcessVariables());
     }
@@ -89,7 +89,11 @@ public class ProcessTest {
     @Deployment(resources = "processes/simpleHttpTask.bpmn20.xml")
     public void testSimpleHttpTask() {
         long l = System.currentTimeMillis();
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("simpleHttpTask");
+        HashMap<String, Object> variables = new HashMap<>();
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("k1", "v1");
+        variables.put("name", params);
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("simpleHttpTask", variables);
         System.out.println(System.currentTimeMillis() - l + "ms " + processInstance.getProcessVariables());
     }
 }

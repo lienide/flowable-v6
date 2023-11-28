@@ -11,13 +11,13 @@
           <flowable:string><![CDATA[https://httpbin.org/post]]></flowable:string>
         </flowable:field>
         <flowable:field name="requestBody">
-          <flowable:expression><![CDATA[{'name':${var:get(name)}}]]></flowable:expression>
+          <flowable:expression><![CDATA[{'name':'${var:get(name)}'}]]></flowable:expression>
         </flowable:field>
         <flowable:field name="responseVariableName">
           <flowable:string><![CDATA[httpbin]]></flowable:string>
         </flowable:field>
         <flowable:field name="saveResponseParametersTransient">
-          <flowable:string><![CDATA[true]]></flowable:string>
+          <flowable:string><![CDATA[false]]></flowable:string>
         </flowable:field>
         <flowable:field name="saveResponseVariableAsJson">
           <flowable:string><![CDATA[true]]></flowable:string>
