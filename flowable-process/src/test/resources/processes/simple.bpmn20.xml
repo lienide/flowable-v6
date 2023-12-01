@@ -21,7 +21,7 @@
           <flowable:string><![CDATA[Content-Type:application/json]]></flowable:string>
         </flowable:field>
         <flowable:field name="requestBody">
-          <flowable:expression><![CDATA[{"name":"${name}"}]]></flowable:expression>
+          <flowable:expression><![CDATA[{"name":"${name}","other":${other}}]]></flowable:expression>
         </flowable:field>
         <flowable:field name="responseVariableName">
           <flowable:string><![CDATA[s1]]></flowable:string>
@@ -47,7 +47,7 @@
           <flowable:string><![CDATA[Content-Type:application/json]]></flowable:string>
         </flowable:field>
         <flowable:field name="requestBody">
-          <flowable:expression><![CDATA[{"phone":${s1.phone}]]></flowable:expression>
+          <flowable:expression><![CDATA[{"phone":"${s1.phone}"]]></flowable:expression>
         </flowable:field>
         <flowable:field name="responseVariableName">
           <flowable:string><![CDATA[s2]]></flowable:string>
@@ -126,7 +126,7 @@
     <sequenceFlow id="sid-92BEE230-9265-4B61-988D-12EFD74B51F8" sourceRef="sid-44C30BAC-C5AE-45CE-A6F0-27044CA0D2C3" targetRef="s2"></sequenceFlow>
     <sequenceFlow id="sid-803E29B1-2399-456F-9401-C43FA6F28841" name="未查得" sourceRef="sid-AAC1C328-2D55-4847-AF24-243B82B9BACF" targetRef="s4"></sequenceFlow>
     <sequenceFlow id="sid-D5B4C2C2-D49B-470B-A520-45466F273EF2" name="查得" sourceRef="sid-AAC1C328-2D55-4847-AF24-243B82B9BACF" targetRef="sid-44C30BAC-C5AE-45CE-A6F0-27044CA0D2C3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[#{s1.a.b!=null}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${s1.phone!=null}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_simple">

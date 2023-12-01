@@ -1,5 +1,8 @@
 package org.example.flowable;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.flowable.engine.ProcessEngine;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
@@ -80,6 +83,9 @@ public class ProcessTest {
     public void testSimple() {
         long l = System.currentTimeMillis();
         HashMap<String, Object> variables = new HashMap<>();
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("k1", "v1");
+        variables.put("other", params);
         variables.put("name", "test");
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("simple", variables);
         System.out.println(System.currentTimeMillis() - l + "ms " + processInstance.getProcessVariables());

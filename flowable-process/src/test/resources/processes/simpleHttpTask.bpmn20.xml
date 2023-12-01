@@ -22,6 +22,9 @@
         <flowable:field name="saveResponseVariableAsJson">
           <flowable:string><![CDATA[true]]></flowable:string>
         </flowable:field>
+        <flowable:field name="requestHeaders">
+          <flowable:string><![CDATA[Content-Type:application/json]]></flowable:string>
+        </flowable:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="sid-6CA1D1B8-E4E2-4BA5-98F9-F5946484B1AC" sourceRef="startEvent1" targetRef="httpbin"/>
